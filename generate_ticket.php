@@ -9,13 +9,13 @@ if ($conn->connect_error) {
 // Get ticket ID from URL
 $ticket_id = $_GET['ticket_id'];
 
-// Update SQL query to use ticket ID
-$sql = "SELECT p.id, p.email, p.nama, p.npm, p.tanggal, 
+// Update SQL query to match table structure
+$sql = "SELECT p.email, p.nama, p.npm, p.tanggal,
                e.nama as nama_event, e.tanggal as event_tanggal, e.waktu, e.lokasi,
                t.id as ticket_id, t.kode_tiket, t.status
         FROM tiket t
         JOIN pesanan p ON t.id_pesanan = p.id 
-        JOIN events e ON p.id_event = e.id 
+        JOIN events e ON t.id_event = e.id 
         WHERE t.id = ?";
 
 $stmt = $conn->prepare($sql);

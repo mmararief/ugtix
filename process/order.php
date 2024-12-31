@@ -25,19 +25,20 @@ try {
     $stmt->execute();
     $order_id = $conn->insert_id;
 
-    // Generate UUID and ticket code
-    $ticket_uuid = generateUUID();
+    // Generate ticket code
     $kode_tiket = generateTicketCode();
 
     // Insert ticket
-    $ticket_stmt = $conn->prepare("INSERT INTO tiket (id, id_pesanan, id_event, kode_tiket, status) VALUES (?, ?, ?, ?, 'active')");
-    $ticket_stmt->bind_param("siis", $ticket_uuid, $order_id, $id_event, $kode_tiket);
+    $ticket_stmt = $conn->prepare("INSERT INTO tiket (id_pesanan, id_event, kode_tiket, status) VALUES (?, ?, ?, 'active')");
+    $ticket_stmt->bind_param("iis", $order_id, $id_event, $kode_tiket);
     $ticket_stmt->execute();
+    $ticket_id = $conn->insert_id;
 
-    // Update pesanan with ticket ID
+    // Update pesanan dengan id_tiket
     $update_stmt = $conn->prepare("UPDATE pesanan SET id_tiket = ? WHERE id = ?");
-    $update_stmt->bind_param("si", $ticket_uuid, $order_id);
+    $update_stmt->bind_param("ii", $ticket_id, $order_id);
     $update_stmt->execute();
+    $update_stmt->close();
 
     // Commit transaction
     $conn->commit();
@@ -45,7 +46,7 @@ try {
     echo json_encode([
         'success' => true,
         'order_id' => $order_id,
-        'ticket_id' => $ticket_uuid
+        'ticket_code' => $kode_tiket
     ]);
 } catch (Exception $e) {
     // Rollback transaction on error
