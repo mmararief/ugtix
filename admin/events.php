@@ -224,6 +224,11 @@ $result = $conn->query($query);
             display: flex;
             gap: 0.5rem;
             margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .event-actions form {
+            margin: 0;
         }
 
         .btn-edit {
@@ -242,6 +247,15 @@ $result = $conn->query($query);
 
         .btn-delete:hover {
             background-color: #c82333;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
         }
 
         .empty-state {
@@ -323,6 +337,9 @@ $result = $conn->query($query);
                             <div class="event-actions">
                                 <a href="edit_event.php?id=<?= $row['id'] ?>" class="btn btn-edit">
                                     <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <a href="event_participants.php?id=<?= $row['id'] ?>" class="btn btn-info">
+                                    <i class="fas fa-users"></i> Peserta
                                 </a>
                                 <form action="" method="POST" style="display: inline;"
                                     onsubmit="return confirm('Yakin ingin menghapus event ini?');">

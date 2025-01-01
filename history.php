@@ -326,12 +326,155 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background-color: var(--dark-bg);
             border-top: 1px solid var(--primary-color);
         }
+
+        /* Step indicator styles */
+        .steps-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(26, 20, 100, 0.3);
+            border: 2px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            transition: all 0.5s ease;
+            animation-duration: 0.5s;
+            animation-fill-mode: both;
+        }
+
+        .step.active {
+            background: var(--primary-color);
+            border-color: var(--accent-color);
+            transform: scale(1.2);
+        }
+
+        .step.completed {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .step-line {
+            height: 2px;
+            width: 100px;
+            background: var(--primary-color);
+            position: relative;
+            margin: 0 15px;
+        }
+
+        .step-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            background: var(--accent-color);
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .step-line.active::after {
+            width: 100%;
+        }
+
+        .step-label {
+            position: absolute;
+            top: 45px;
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            white-space: nowrap;
+        }
+
+        /* Animation for steps */
+        @keyframes stepPop {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .step.animate {
+            animation: stepPop 0.5s ease;
+        }
+
+        @keyframes stepActivate {
+            0% {
+                transform: scale(1);
+                background: rgba(26, 20, 100, 0.3);
+            }
+
+            50% {
+                transform: scale(1.3);
+            }
+
+            100% {
+                transform: scale(1.2);
+                background: var(--primary-color);
+            }
+        }
+
+        @keyframes stepComplete {
+            0% {
+                transform: scale(1.2);
+                background: var(--primary-color);
+            }
+
+            50% {
+                transform: scale(1.3);
+            }
+
+            100% {
+                transform: scale(1);
+                background: var(--accent-color);
+            }
+        }
+
+        .step.activating {
+            animation: stepActivate 0.5s forwards;
+        }
+
+        .step.completing {
+            animation: stepComplete 0.5s forwards;
+        }
     </style>
 </head>
 
 <body>
     <?php include 'includes/navbar.php'; ?>
     <div class="container">
+        <div class="steps-container">
+            <div class="step <?php echo $step >= 1 ? 'active' : ''; ?> <?php echo $step > 1 ? 'completed' : ''; ?>">
+                1
+                <span class="step-label">Enter Email</span>
+            </div>
+            <div class="step-line <?php echo $step > 1 ? 'active' : ''; ?>"></div>
+            <div class="step <?php echo $step >= 2 ? 'active' : ''; ?> <?php echo $step > 2 ? 'completed' : ''; ?>">
+                2
+                <span class="step-label">Verify OTP</span>
+            </div>
+            <div class="step-line <?php echo $step > 2 ? 'active' : ''; ?>"></div>
+            <div class="step <?php echo $step >= 3 ? 'active' : ''; ?>">
+                3
+                <span class="step-label">View History</span>
+            </div>
+        </div>
+
         <h2>Order History</h2>
 
         <?php if ($error): ?>
@@ -485,6 +628,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     correctLevel: QRCode.CorrectLevel.H
                 });
             }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentStep = <?php echo $step; ?>;
+            const steps = document.querySelectorAll('.step');
+            const stepLines = document.querySelectorAll('.step-line');
+
+            function animateToStep(stepNumber) {
+                steps.forEach((step, index) => {
+                    // Animate current step
+                    if (index + 1 === stepNumber) {
+                        step.classList.add('activating');
+                    }
+
+                    // Animate completed steps
+                    if (index + 1 < stepNumber) {
+                        setTimeout(() => {
+                            step.classList.add('completing');
+                        }, 300);
+
+                        // Animate the line after this step
+                        if (stepLines[index]) {
+                            setTimeout(() => {
+                                stepLines[index].classList.add('active');
+                            }, 400);
+                        }
+                    }
+                });
+            }
+
+            // Initial animation
+            setTimeout(() => {
+                animateToStep(currentStep);
+            }, 300);
         });
     </script>
 </body>

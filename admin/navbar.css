@@ -1,3 +1,15 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+}
+
+/* Navbar Styles */
 .navbar {
     background-color: #1a1464;
     padding: 1rem 2rem;
@@ -35,10 +47,8 @@
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-.logout-btn {
-    background: #ff3b3b;
+/* Main Content Styles */
+.main-content {
+    margin-top: 80px;
+    padding: 2rem;
 }
-
-.logout-btn:hover {
-    background: #ff5252;
-} 
