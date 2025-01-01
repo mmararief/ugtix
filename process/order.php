@@ -24,7 +24,7 @@ try {
     $kode_tiket = generateTicketCode();
 
     // Insert ticket
-    $ticket_stmt = $conn->prepare("INSERT INTO tiket (id_pesanan, id_event, kode_tiket, status) VALUES (?, ?, ?, 'active')");
+    $ticket_stmt = $conn->prepare("INSERT INTO tiket (id_pesanan, id_event, kode_tiket, status) VALUES (?, ?, ?, 'aktif')");
     $ticket_stmt->bind_param("iis", $order_id, $id_event, $kode_tiket);
     $ticket_stmt->execute();
     $ticket_id = $conn->insert_id;

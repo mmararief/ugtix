@@ -12,28 +12,52 @@ require_once '../process/koneksi.php';
 if (isset($_POST['delete_event'])) {
     $event_id = $_POST['event_id'];
 
-    // Get image filename before deletion
-    $query = "SELECT gambar FROM events WHERE id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $event_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if ($row = $result->fetch_assoc()) {
-        $image_path = "../uploads/events/" . $row['gambar'];
-        if (file_exists($image_path)) {
-            unlink($image_path);
+    // Start transaction
+    $conn->begin_transaction();
+
+    try {
+        // First delete related tickets
+        $query = "DELETE t FROM tiket t 
+                 INNER JOIN pesanan p ON t.id_pesanan = p.id 
+                 WHERE p.id_event = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $event_id);
+        $stmt->execute();
+
+        // Then delete related orders
+        $query = "DELETE FROM pesanan WHERE id_event = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $event_id);
+        $stmt->execute();
+
+        // Get image filename before deletion
+        $query = "SELECT gambar FROM events WHERE id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $event_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($row = $result->fetch_assoc()) {
+            $image_path = "../uploads/events/" . $row['gambar'];
+            if (file_exists($image_path)) {
+                unlink($image_path);
+            }
         }
+
+        // Finally delete the event
+        $query = "DELETE FROM events WHERE id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $event_id);
+        $stmt->execute();
+
+        // Commit transaction
+        $conn->commit();
+        $_SESSION['success'] = "Event berhasil dihapus!";
+    } catch (Exception $e) {
+        // Rollback transaction on error
+        $conn->rollback();
+        $_SESSION['error'] = "Gagal menghapus event. " . $e->getMessage();
     }
 
-    // Delete from database
-    $query = "DELETE FROM events WHERE id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $event_id);
-    if ($stmt->execute()) {
-        $_SESSION['success'] = "Event berhasil dihapus!";
-    } else {
-        $_SESSION['error'] = "Gagal menghapus event.";
-    }
     header("Location: events.php");
     exit;
 }
@@ -248,9 +272,9 @@ $result = $conn->query($query);
 
 <body>
     <nav class="navbar">
-        <a href="admin_dashboard.php" class="navbar-brand">Admin Panel</a>
+        <a href="index.php" class="navbar-brand">Admin Panel</a>
         <ul class="navbar-nav">
-            <li><a href="admin_dashboard.php" class="nav-link">Dashboard</a></li>
+            <li><a href="index.php" class="nav-link">Dashboard</a></li>
             <li><a href="events.php" class="nav-link">Events</a></li>
             <li><a href="orders.php" class="nav-link">Pesanan</a></li>
             <li><a href="logout.php" class="nav-link logout-btn">Logout</a></li>

@@ -180,11 +180,11 @@ $totalPesanan = $resultPesanan->fetch_assoc()['total_pesanan'] ?? 0;
 
 <body>
     <nav class="navbar">
-        <a href="admin_dashboard.php" class="navbar-brand">
+        <a href="index.php" class="navbar-brand">
             Admin Panel
         </a>
         <ul class="navbar-nav">
-            <li><a href="admin_dashboard.php" class="nav-link">Dashboard</a></li>
+            <li><a href="index.php" class="nav-link">Dashboard</a></li>
             <li><a href="events.php" class="nav-link">Events</a></li>
             <li><a href="orders.php" class="nav-link">Pesanan</a></li>
             <li><a href="logout.php" class="nav-link logout-btn">Logout</a></li>

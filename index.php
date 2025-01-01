@@ -189,21 +189,30 @@
         .contact-info {
             color: #ccc;
         }
+
+        .event-slider {
+            padding: 20px;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: var(--accent-color);
+        }
+
+        .swiper-pagination-bullet-active {
+            background: var(--accent-color);
+        }
+
+        .event-card {
+            margin: 10px;
+        }
     </style>
+    <!-- Add Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 
 <body>
-    <!-- Header -->
-    <header class="header">
-        <a href="#" class="logo">UGTIX</a>
-        <nav class="nav-links">
-            <a href="index.php">Home</a>
-            <a href="events.php">Event</a>
-            <a href="#">About</a>
-        </nav>
-        <a href="admin/login.php" class="login-btn">Login</a>
-    </header>
-
+    <?php include 'includes/navbar.php'; ?>
     <!-- Hero Banner -->
     <div class="hero-banner">
         <img src="img/2.jpg" alt="Event Banner" style="width: 100%; height: 100%; object-fit: cover;">
@@ -213,49 +222,47 @@
     <section class="event-section">
         <div class="section-header">
             <h2 class="section-title">Event tersedia</h2>
-            <a href="#" class="see-all">Semua event →</a>
+            <a href="events.php" class="see-all">Semua event →</a>
         </div>
-        <div class="event-grid">
-            <?php
-            // Connect to the database
-            $servername = "localhost:3305";
-            $username = "root";
-            $password = "";
-            $dbname = "ugtix";
-            $conn = new mysqli($servername, $username, $password, $dbname);
+        <!-- Add Swiper container -->
+        <div class="swiper event-slider">
+            <div class="swiper-wrapper">
+                <?php
+                // Connect to the database
+                require_once 'process/koneksi.php';
+                // Fetch 6 latest events from the database
+                $sql = "SELECT id, nama, tanggal, waktu, lokasi, harga, deskripsi, gambar FROM events ORDER BY id DESC LIMIT 6";
+                $result = $conn->query($sql);
 
-            // Check connection
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-
-            // Fetch events from the database
-            $sql = "SELECT id, nama, tanggal, waktu, lokasi, harga, deskripsi, gambar FROM events";
-            $result = $conn->query($sql);
-
-            if ($result->num_rows > 0) {
-                // Output data of each row
-                while ($row = $result->fetch_assoc()) {
-                    echo '<a href="detailevent.php?id=' . $row["id"] . '" style="  text-decoration: none;color: inherit;display: block;">';
-                    echo '<div class="event-card">';
-                    echo '    <div class="event-image">';
-                    echo '        <img src="uploads/events/' .  $row["gambar"] . '" alt="' . $row["nama"] . '" style="width: 100%; height: 100%; object-fit: cover;">';
-                    echo '    </div>';
-                    echo '    <div class="event-details">';
-                    echo '        <h3 class="event-title">' . $row["nama"] . '</h3>';
-                    echo '        <p class="event-info">' . $row["tanggal"] . ' ' . $row["waktu"] . '</p>';
-                    echo '        <p class="event-info">' . $row["lokasi"] . '</p>';
-                    echo '        <p class="event-price">' . $row["harga"] . '</p>';
-                    echo '        <p class="event-description">' . $row["deskripsi"] . '</p>';
-                    echo '    </div>';
-                    echo '</div>';
-                    echo '</a>';
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo '<div class="swiper-slide">';
+                        echo '<a href="detailevent.php?id=' . $row["id"] . '" style="text-decoration: none;color: inherit;display: block;">';
+                        echo '<div class="event-card">';
+                        echo '    <div class="event-image">';
+                        echo '        <img src="uploads/events/' .  $row["gambar"] . '" alt="' . $row["nama"] . '" style="width: 100%; height: 100%; object-fit: cover;">';
+                        echo '    </div>';
+                        echo '    <div class="event-details">';
+                        echo '        <h3 class="event-title">' . $row["nama"] . '</h3>';
+                        echo '        <p class="event-info">' . $row["tanggal"] . ' ' . $row["waktu"] . '</p>';
+                        echo '        <p class="event-info">' . $row["lokasi"] . '</p>';
+                        echo '        <p class="event-price">' . $row["harga"] . '</p>';
+                        echo '    </div>';
+                        echo '</div>';
+                        echo '</a>';
+                        echo '</div>';
+                    }
+                } else {
+                    echo "No events available.";
                 }
-            } else {
-                echo "No events available.";
-            }
-            $conn->close();
-            ?>
+                $conn->close();
+                ?>
+            </div>
+            <!-- Add navigation buttons -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <!-- Add pagination -->
+            <div class="swiper-pagination"></div>
         </div>
     </section>
 
@@ -299,6 +306,34 @@
             </div>
         </div>
     </footer>
+
+    <!-- Add Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        const swiper = new Swiper('.event-slider', {
+            slidesPerView: 1,
+            spaceBetween: 10,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 2,
+                },
+                968: {
+                    slidesPerView: 3,
+                },
+                1200: {
+                    slidesPerView: 4,
+                },
+            },
+        });
+    </script>
 </body>
 
 </html>

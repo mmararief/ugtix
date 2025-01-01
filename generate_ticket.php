@@ -1,10 +1,6 @@
 <?php
 // Database connection
-$conn = new mysqli('localhost:3305', 'root', '', 'ugtix');
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require_once 'process/koneksi.php';
 
 // Get ticket ID from URL
 $ticket_id = $_GET['ticket_id'];

@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Set sesi login
             $_SESSION['admin_id'] = $admin['id'];
             $_SESSION['admin_nama'] = $admin['nama'];
-            header("Location: admin_dashboard.php");
+            header("Location: index.php");
             exit;
         } else {
             echo "Password salah!";

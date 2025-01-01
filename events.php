@@ -205,16 +205,7 @@
 </head>
 
 <body>
-    <!-- Header -->
-    <header class="header">
-        <a href="#" class="logo">UGTIX</a>
-        <nav class="nav-links">
-            <a href="index.php">Home</a>
-            <a href="events.php">Event</a>
-            <a href="#">About</a>
-        </nav>
-        <a href="#" class="login-btn">Login</a>
-    </header>
+    <?php include 'includes/navbar.php'; ?>
 
     <!-- Main Content -->
     <main class="events-container">
@@ -234,17 +225,7 @@
             <!-- Event Cards -->
             <?php
             // Connect to the database
-            $servername = "localhost:3305";
-            $username = "root";
-            $password = "";
-            $dbname = "ugtix";
-            $conn = new mysqli($servername, $username, $password, $dbname);
-
-            // Check connection
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-
+            require_once 'process/koneksi.php';
             // Fetch events from the database
             $sql = "SELECT id,nama, tanggal, waktu, lokasi, harga, deskripsi, gambar FROM events";
             $result = $conn->query($sql);
@@ -262,7 +243,7 @@
                     echo '        <p class="event-info">' . $row["tanggal"] . ' ' . $row["waktu"] . '</p>';
                     echo '        <p class="event-info">' . $row["lokasi"] . '</p>';
                     echo '        <p class="event-price">Rp ' . number_format($row["harga"], 0, ',', '.') . '</p>';
-                    echo '        <p class="event-description">' . $row["deskripsi"] . '</p>';
+
                     echo '    </div>';
                     echo '</div>';
                     echo '</a>';

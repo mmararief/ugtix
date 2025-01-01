@@ -1,15 +1,6 @@
 <?php
 // Connect to the database
-$servername = "localhost:3305";
-$username = "root";
-$password = "";
-$dbname = "ugtix";
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require_once 'process/koneksi.php';
 
 // Get the event ID from the URL
 $event_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -406,22 +397,16 @@ if ($result->num_rows > 0) {
 
     <body>
         <!-- Header -->
-        <header class="header">
-            <a href="#" class="logo">UGTIX</a>
-            <nav class="nav-links">
-                <a href="index.php">Home</a>
-                <a href="events.php">Event</a>
-                <a href="#">About</a>
-            </nav>
-            <a href="#" class="login-btn">Login</a>
-        </header>
+        <?php include 'includes/navbar.php'; ?>
 
         <!-- Main Content -->
         <main class="event-container">
             <div class="event-header">
-                <div class="event-image">
-                    <img src="uploads/events/<?php echo $row['gambar']; ?>" alt="<?php echo $row['nama']; ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                <div class="event-image" style="display: flex; align-items: center; justify-content: center; background-color: #000;">
+                    <img src="uploads/events/<?php echo $row['gambar']; ?>" alt="<?php echo $row['nama']; ?>" style="max-width: 100%; max-height: 100%; width: auto; height: auto;">
                 </div>
+
+
 
                 <div class="event-info">
                     <h1 class="event-title"><?php echo $row['nama']; ?></h1>
