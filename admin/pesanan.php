@@ -90,11 +90,14 @@ $resultPesanan = $conn->query($queryPesanan);
             margin-bottom: 2rem;
         }
 
-        table, th, td {
+        table,
+        th,
+        td {
             border: 1px solid #ddd;
         }
 
-        th, td {
+        th,
+        td {
             padding: 1rem;
             text-align: left;
         }
@@ -132,17 +135,8 @@ $resultPesanan = $conn->query($queryPesanan);
 </head>
 
 <body>
-    <nav class="navbar">
-        <a href="admin_dashboard.php" class="navbar-brand">
-            Admin Panel
-        </a>
-        <ul class="navbar-nav">
-            <li><a href="admin_dashboard.php" class="nav-link">Dashboard</a></li>
-            <li><a href="events.php" class="nav-link">Events</a></li>
-            <li><a href="orders.php" class="nav-link">Pesanan</a></li>
-            <li><a href="logout.php" class="nav-link">Logout</a></li>
-        </ul>
-    </nav>
+    <?php include 'navbar.php'; ?>
+
 
     <div class="main-content">
         <h2>Daftar Pesanan</h2>

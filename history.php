@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['history_email'] = $email;
 
         // Send OTP request with improved error handling
-        $response = callAPI('http://localhost:5000/send-otp', ['email' => $email]);
+        $response = callAPI('https://ugtix.dapurkynan.com/send-otp', ['email' => $email]);
         if ($response && isset($response['success'])) {
             $_SESSION['history_step'] = 2;
             header('Location: history.php');
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $otp = $_POST['otp'];
 
         // Verify OTP
-        $response = callAPI('http://localhost:5000/verify-otp', [
+        $response = callAPI('https://ugtix.dapurkynan.com/verify-otp', [
             'email' => $email,
             'otp' => $otp
         ]);

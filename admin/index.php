@@ -32,6 +32,7 @@ $totalPesanan = $resultPesanan->fetch_assoc()['total_pesanan'] ?? 0;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="navbar.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -42,44 +43,6 @@ $totalPesanan = $resultPesanan->fetch_assoc()['total_pesanan'] ?? 0;
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f4f4;
-        }
-
-        /* Navbar Styles */
-        .navbar {
-            background-color: #1a1464;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .navbar-brand {
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        .navbar-nav {
-            display: flex;
-            gap: 1rem;
-            list-style: none;
-        }
-
-        .nav-link {
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.1);
         }
 
         /* Main Content Styles */
@@ -179,17 +142,7 @@ $totalPesanan = $resultPesanan->fetch_assoc()['total_pesanan'] ?? 0;
 </head>
 
 <body>
-    <nav class="navbar">
-        <a href="index.php" class="navbar-brand">
-            Admin Panel
-        </a>
-        <ul class="navbar-nav">
-            <li><a href="index.php" class="nav-link">Dashboard</a></li>
-            <li><a href="events.php" class="nav-link">Events</a></li>
-            <li><a href="pesanan.php" class="nav-link">Pesanan</a></li>
-            <li><a href="logout.php" class="nav-link logout-btn">Logout</a></li>
-        </ul>
-    </nav>
+    <?php include 'navbar.php'; ?>
 
     <div class="main-content">
         <div class="dashboard-cards">

@@ -251,15 +251,7 @@
             $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
             $start = ($page - 1) * $eventsPerPage;
 
-            $servername = "localhost:3305";
-            $username = "root";
-            $password = "";
-            $dbname = "ugtix";
-            $conn = new mysqli($servername, $username, $password, $dbname);
-
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
+            require_once 'process/koneksi.php';
 
             $totalEventsQuery = "SELECT COUNT(*) as total FROM events";
             $totalEventsResult = $conn->query($totalEventsQuery);

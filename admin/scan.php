@@ -221,15 +221,8 @@ if (isset($_POST['ticket_code'])) {
 </head>
 
 <body>
-    <nav class="navbar">
-        <a href="dashboard.php" class="navbar-brand">Admin Panel</a>
-        <ul class="navbar-nav">
-            <li><a href="dashboard.php" class="nav-link">Dashboard</a></li>
-            <li><a href="events.php" class="nav-link">Events</a></li>
-            <li><a href="pesanan.php" class="nav-link">Pesanan</a></li>
-            <li><a href="logout.php" class="nav-link logout-btn">Logout</a></li>
-        </ul>
-    </nav>
+    <?php include 'navbar.php'; ?>
+
 
     <div class="main-content">
         <div class="scanner-container">

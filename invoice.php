@@ -1,11 +1,6 @@
 <?php
 // Database connection
-$conn = new mysqli('localhost', 'root', '', 'ugtix');
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
+require_once 'process/koneksi.php';
 // Get order ID from URL
 $order_id = $_GET['id'];
 

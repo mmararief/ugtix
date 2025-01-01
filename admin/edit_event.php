@@ -246,15 +246,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-    <nav class="navbar">
-        <a href="admin_dashboard.php" class="navbar-brand">Admin Panel</a>
-        <ul class="navbar-nav">
-            <li><a href="admin_dashboard.php" class="nav-link">Dashboard</a></li>
-            <li><a href="events.php" class="nav-link">Events</a></li>
-            <li><a href="pesanan.php" class="nav-link">Pesanan</a></li>
-            <li><a href="logout.php" class="nav-link logout-btn">Logout</a></li>
-        </ul>
-    </nav>
+    <?php include 'navbar.php'; ?>
+
 
     <div class="main-content">
         <div class="card">
