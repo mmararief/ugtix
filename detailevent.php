@@ -505,7 +505,7 @@ if ($result->num_rows > 0) {
                     </div>
 
                     <div class="event-price-tag">
-                        <i class="fas fa-ticket-alt"></i> <?php echo $row['harga']; ?>
+                        <i class="fas fa-ticket-alt"> Harga: Rp. <?php echo number_format($row['harga'], 0, ',', '.'); ?></i> 
                     </div>
 
                     <button class="buy-btn">
