@@ -201,12 +201,12 @@
             <a href="events.php">Event</a>
             <a href="#">About</a>
         </nav>
-        <a href="#" class="login-btn">Login</a>
+        <a href="admin/login.php" class="login-btn">Login</a>
     </header>
 
     <!-- Hero Banner -->
     <div class="hero-banner">
-        <img src="/api/placeholder/1200/300" alt="Event Banner" style="width: 100%; height: 100%; object-fit: cover;">
+        <img src="img/2.jpg" alt="Event Banner" style="width: 100%; height: 100%; object-fit: cover;">
     </div>
 
     <!-- Event Section -->
@@ -218,7 +218,7 @@
         <div class="event-grid">
             <?php
             // Connect to the database
-            $servername = "localhost";
+            $servername = "localhost:3305";
             $username = "root";
             $password = "";
             $dbname = "ugtix";
@@ -265,22 +265,22 @@
         <p style="text-align: center; color: #888; margin-top: 0.5rem;">Sekarang ikut event jadi lebih mudah</p>
         <div class="steps">
             <div class="step">
-                <img src="/api/placeholder/80/80" alt="Step 1">
+                <img src="img/akun.png" alt="Step 1">
                 <p>Daftarkan Akun</p>
             </div>
             <div class="arrow">→</div>
             <div class="step">
-                <img src="/api/placeholder/80/80" alt="Step 2">
+                <img src="img/choose-topic.png" alt="Step 2">
                 <p>Pilih Event</p>
             </div>
             <div class="arrow">→</div>
             <div class="step">
-                <img src="/api/placeholder/80/80" alt="Step 3">
+                <img src="img/money.png" alt="Step 3">
                 <p>Pembayaran</p>
             </div>
             <div class="arrow">→</div>
             <div class="step">
-                <img src="/api/placeholder/80/80" alt="Step 4">
+                <img src="img/checked.png" alt="Step 4">
                 <p>Pembelian Selesai</p>
             </div>
         </div>

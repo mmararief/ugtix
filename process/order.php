@@ -1,10 +1,5 @@
 <?php
-// Database connection
-$conn = new mysqli('localhost', 'root', '', 'ugtix');
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'koneksi.php';
 
 // Start transaction
 $conn->begin_transaction();

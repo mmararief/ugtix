@@ -1,6 +1,6 @@
 <?php
 // Connect to the database
-$servername = "localhost";
+$servername = "localhost:3305";
 $username = "root";
 $password = "";
 $dbname = "ugtix";

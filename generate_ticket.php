@@ -1,6 +1,6 @@
 <?php
 // Database connection
-$conn = new mysqli('localhost', 'root', '', 'ugtix');
+$conn = new mysqli('localhost:3305', 'root', '', 'ugtix');
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
