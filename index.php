@@ -57,26 +57,67 @@
             text-decoration: none;
         }
 
-        /* Hero Banner */
+        /* Enhanced Hero Section */
+        .hero-section {
+            position: relative;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #2a1f8f 100%);
+            border-radius: 0 0 50px 50px;
+            margin-bottom: 4rem;
+            overflow: hidden;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: slideUp 0.8s ease-out forwards;
+            animation-delay: 0.3s;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0;
+            animation: slideUp 0.8s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
         .hero-banner {
-            width: 100%;
-            height: 300px;
-            background-image: url('/api/placeholder/1200/300');
-            background-size: cover;
-            background-position: center;
-            margin-bottom: 2rem;
+            position: relative;
+            height: 400px;
+            border-radius: 30px;
+            margin: 2rem auto;
+            max-width: 1200px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            animation: scaleIn 1s ease-out forwards;
+            animation-delay: 0.3s;
         }
 
         /* Event Section */
         .event-section {
-            padding: 2rem;
+            padding: 3rem 2rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+            animation-delay: 0.8s;
         }
 
         .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: slideUp 0.8s ease-out forwards;
+            animation-delay: 1s;
         }
 
         .section-title {
@@ -97,9 +138,17 @@
 
         .event-card {
             background-color: #2a2a2a;
-            border-radius: 8px;
+            border-radius: 20px;
             overflow: hidden;
             border: 1px solid #333;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            animation: slideUp 0.8s ease-out forwards;
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
 
         .event-image {
@@ -130,9 +179,13 @@
 
         /* How to Buy Section */
         .how-to-buy {
-            padding: 2rem;
-            background-color: #2a2a2a;
-            margin: 2rem 0;
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            border-radius: 30px;
+            margin: 4rem 2rem;
+            padding: 4rem 2rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+            animation-delay: 1.2s;
         }
 
         .steps {
@@ -148,6 +201,24 @@
             align-items: center;
             color: white;
             text-align: center;
+            opacity: 0;
+            animation: slideUp 0.8s ease-out forwards;
+        }
+
+        .step:nth-child(1) {
+            animation-delay: 1.4s;
+        }
+
+        .step:nth-child(3) {
+            animation-delay: 1.6s;
+        }
+
+        .step:nth-child(5) {
+            animation-delay: 1.8s;
+        }
+
+        .step:nth-child(7) {
+            animation-delay: 2s;
         }
 
         .step img {
@@ -155,6 +226,11 @@
             height: 80px;
             border-radius: 50%;
             margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .step:hover img {
+            transform: scale(1.1);
         }
 
         .arrow {
@@ -196,7 +272,22 @@
 
         .swiper-button-next,
         .swiper-button-prev {
-            color: var(--accent-color);
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .swiper-button-next:hover,
+        .swiper-button-prev:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .swiper-button-next::after,
+        .swiper-button-prev::after {
+            font-size: 18px;
         }
 
         .swiper-pagination-bullet-active {
@@ -206,6 +297,57 @@
         .event-card {
             margin: 10px;
         }
+
+        /* Animation Keyframes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-banner {
+                height: 300px;
+            }
+
+            .how-to-buy {
+                margin: 2rem 1rem;
+                padding: 2rem 1rem;
+            }
+        }
     </style>
     <!-- Add Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -213,9 +355,15 @@
 
 <body>
     <?php include 'includes/navbar.php'; ?>
-    <!-- Hero Banner -->
-    <div class="hero-banner">
-        <img src="img/2.jpg" alt="Event Banner" style="width: 100%; height: 100%; object-fit: cover;">
+    <!-- Enhanced Hero Section -->
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Temukan Event Terbaik</h1>
+            <p class="hero-subtitle">Jelajahi dan pesan tiket event favoritmu dengan mudah</p>
+        </div>
+        <div class="hero-banner">
+            <img src="img/2.jpg" alt="Event Banner" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
     </div>
 
     <!-- Event Section -->

@@ -45,10 +45,45 @@ $totalPesanan = $resultPesanan->fetch_assoc()['total_pesanan'] ?? 0;
             background-color: #f4f4f4;
         }
 
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #1a1464 0%, #2a1f8f 100%);
+            border-radius: 0 0 30px 30px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+            animation-delay: 0.3s;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
         /* Main Content Styles */
         .main-content {
-            margin-top: 80px;
-            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
 
         .dashboard-cards {
@@ -61,13 +96,24 @@ $totalPesanan = $resultPesanan->fetch_assoc()['total_pesanan'] ?? 0;
         .card {
             background: white;
             padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: slideUp 0.8s ease-out forwards;
+        }
+
+        .card:nth-child(1) {
+            animation-delay: 0.4s;
+        }
+
+        .card:nth-child(2) {
+            animation-delay: 0.6s;
         }
 
         .card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
 
         .card-header {
@@ -79,70 +125,117 @@ $totalPesanan = $resultPesanan->fetch_assoc()['total_pesanan'] ?? 0;
         .card-icon {
             background-color: #1a1464;
             color: #9eff00;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-right: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.1);
         }
 
         .card-title {
             color: #1a1464;
             margin: 0;
+            font-size: 1.2rem;
         }
 
         .card-value {
-            font-size: 2rem;
+            font-size: 2.5rem;
             color: #1a1464;
             font-weight: bold;
+            margin-top: 0.5rem;
         }
 
         .quick-actions {
             background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            animation: slideUp 0.8s ease-out forwards;
+            animation-delay: 0.8s;
         }
 
         .action-buttons {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
         }
 
         .action-button {
             background: #1a1464;
             color: white;
             padding: 1rem;
-            border-radius: 5px;
+            border-radius: 15px;
             text-decoration: none;
             text-align: center;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            gap: 0.8rem;
+            font-weight: 500;
         }
 
         .action-button:hover {
             background: #2a1f8f;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(26, 20, 100, 0.2);
         }
 
-        .logout-btn {
-            background: #ff3b3b;
+        /* Animations */
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
-        .logout-btn:hover {
-            background: #ff5252;
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
     </style>
 </head>
 
 <body>
     <?php include 'navbar.php'; ?>
+
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Welcome, <?php echo htmlspecialchars($_SESSION['admin_nama']); ?>!</h1>
+            <p class="hero-subtitle">Manage your events and orders from one place</p>
+        </div>
+    </div>
 
     <div class="main-content">
         <div class="dashboard-cards">
