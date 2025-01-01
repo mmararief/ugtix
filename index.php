@@ -105,6 +105,157 @@
             animation-delay: 0.3s;
         }
 
+        /* Enhanced Event Slider */
+        .event-slider {
+            padding: 20px 0 40px;
+            margin: 0 -20px;
+        }
+
+        .swiper-slide {
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .swiper-slide-active {
+            transform: scale(1.05);
+        }
+
+        .event-card {
+            background: rgba(42, 42, 42, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            height: 100%;
+            backdrop-filter: blur(10px);
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-color);
+        }
+
+        .event-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .event-card:hover .event-image img {
+            transform: scale(1.1);
+        }
+
+        .event-details {
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .event-title {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .event-info {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .event-info i {
+            color: var(--accent-color);
+            font-size: 1rem;
+        }
+
+        .event-price {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Enhanced Swiper Navigation */
+        .swiper-button-next,
+        .swiper-button-prev {
+            background: rgba(255, 255, 255, 0.9);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .swiper-button-next:after,
+        .swiper-button-prev:after {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .swiper-button-next {
+            right: 10px;
+        }
+
+        .swiper-button-prev {
+            left: 10px;
+        }
+
+        .swiper-button-next:hover,
+        .swiper-button-prev:hover {
+            background: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        .swiper-button-next:hover:after,
+        .swiper-button-prev:hover:after {
+            color: var(--dark-bg);
+        }
+
+        /* Disable buttons on mobile */
+        @media (max-width: 768px) {
+
+            .swiper-button-next,
+            .swiper-button-prev {
+                display: none;
+            }
+        }
+
+        /* Enhanced pagination */
+        .swiper-pagination {
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .swiper-pagination-bullet {
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            opacity: 1;
+            transition: all 0.3s ease;
+        }
+
+        .swiper-pagination-bullet-active {
+            width: 20px;
+            border-radius: 4px;
+            background: var(--accent-color);
+        }
+
         /* Event Section */
         .event-section {
             padding: 3rem 2rem;
@@ -460,7 +611,13 @@
     <script>
         const swiper = new Swiper('.event-slider', {
             slidesPerView: 1,
-            spaceBetween: 10,
+            spaceBetween: 30,
+            centeredSlides: true,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
             pagination: {
                 el: '.swiper-pagination',
                 clickable: true,
@@ -469,15 +626,26 @@
                 nextEl: '.swiper-button-next',
                 prevEl: '.swiper-button-prev',
             },
+            effect: 'coverflow',
+            coverflowEffect: {
+                rotate: 0,
+                stretch: 0,
+                depth: 100,
+                modifier: 2,
+                slideShadows: false,
+            },
             breakpoints: {
                 640: {
                     slidesPerView: 2,
+                    centeredSlides: false,
                 },
                 968: {
                     slidesPerView: 3,
+                    centeredSlides: false,
                 },
                 1200: {
                     slidesPerView: 4,
+                    centeredSlides: false,
                 },
             },
         });

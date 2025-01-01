@@ -96,6 +96,13 @@ if ($result->num_rows > 0) {
                 overflow: hidden;
             }
 
+            .event-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                background-color: #2a2a2a;
+            }
+
             .event-info {
                 color: white;
             }
@@ -254,6 +261,41 @@ if ($result->num_rows > 0) {
                 }
             }
 
+            /* Animations */
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+
+                to {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes slideUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes modalSlideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-100px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
             /* Enhanced Modal Styles */
             .modal {
                 display: none;
@@ -370,17 +412,34 @@ if ($result->num_rows > 0) {
                 position: relative;
             }
 
-            /* Responsive adjustments */
-            @media (max-width: 768px) {
-                .modal-content {
-                    margin: 10% auto;
-                    width: 95%;
+            /* Responsive Design */
+            @media (max-width: 968px) {
+                .event-header {
+                    grid-template-columns: 1fr;
+                }
+
+                .event-title {
+                    font-size: 2rem;
+                }
+
+                .event-image {
+                    aspect-ratio: 16/10;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .event-container {
+                    padding: 0 1rem;
+                    margin: 2rem auto;
+                }
+
+                .event-info,
+                .event-description {
                     padding: 1.5rem;
                 }
 
-                #orderForm input,
-                #orderForm select {
-                    padding: 0.7rem;
+                .meta-item {
+                    font-size: 1rem;
                 }
             }
 
@@ -392,6 +451,27 @@ if ($result->num_rows > 0) {
                 transform: translateY(-50%);
                 color: #666;
             }
+
+            /* Add these animation classes */
+            .animate-fade-in {
+                animation: fadeIn 0.8s ease-out;
+            }
+
+            .animate-slide-up {
+                animation: slideUp 0.8s ease-out;
+            }
+
+            .animate-delay-1 {
+                animation-delay: 0.2s;
+            }
+
+            .animate-delay-2 {
+                animation-delay: 0.4s;
+            }
+
+            .animate-delay-3 {
+                animation-delay: 0.6s;
+            }
         </style>
     </head>
 
@@ -399,47 +479,51 @@ if ($result->num_rows > 0) {
         <!-- Header -->
         <?php include 'includes/navbar.php'; ?>
 
-        <!-- Main Content -->
-        <main class="event-container">
+        <!-- Update the HTML structure -->
+        <div class="event-container">
             <div class="event-header">
-                <div class="event-image" style="display: flex; align-items: center; justify-content: center; background-color: #000;">
-                    <img src="uploads/events/<?php echo $row['gambar']; ?>" alt="<?php echo $row['nama']; ?>" style="max-width: 100%; max-height: 100%; width: auto; height: auto;">
+                <div class="event-image animate-fade-in">
+                    <img src="uploads/events/<?php echo $row['gambar']; ?>" alt="<?php echo $row['nama']; ?>">
                 </div>
 
-
-
-                <div class="event-info">
+                <div class="event-info animate-slide-up">
                     <h1 class="event-title"><?php echo $row['nama']; ?></h1>
 
                     <div class="event-meta">
                         <div class="meta-item">
-                            <span>📅 Tanggal:</span>
+                            <i class="fas fa-calendar"></i>
                             <span><?php echo $row['tanggal']; ?></span>
                         </div>
                         <div class="meta-item">
-                            <span>⏰ Waktu:</span>
+                            <i class="fas fa-clock"></i>
                             <span><?php echo $row['waktu']; ?></span>
                         </div>
                         <div class="meta-item">
-                            <span>📍 Lokasi:</span>
+                            <i class="fas fa-map-marker-alt"></i>
                             <span><?php echo $row['lokasi']; ?></span>
                         </div>
                     </div>
 
-                    <p class="event-price-tag">Harga: <?php echo $row['harga']; ?></p>
-
-                    <div class="event-description">
-                        <h2 class="description-title">Deskripsi Event</h2>
-                        <div class="description-content">
-                            <p><?php echo $row['deskripsi']; ?></p>
-                        </div>
+                    <div class="event-price-tag">
+                        <i class="fas fa-ticket-alt"></i> <?php echo $row['harga']; ?>
                     </div>
+
+                    <button class="buy-btn">
+                        <i class="fas fa-shopping-cart"></i> Pesan Tiket
+                    </button>
                 </div>
             </div>
 
-            <!-- Pesan Tiket Button -->
-            <button class="buy-btn">Pesan Tiket</button>
-        </main>
+            <div class="event-description animate-slide-up animate-delay-1">
+                <h2 class="description-title">
+                    <i class="fas fa-info-circle"></i>
+                    Deskripsi Event
+                </h2>
+                <div class="description-content">
+                    <?php echo nl2br($row['deskripsi']); ?>
+                </div>
+            </div>
+        </div>
 
         <!-- Modal Structure -->
         <div id="orderModal" class="modal">
