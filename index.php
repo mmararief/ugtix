@@ -545,7 +545,7 @@
                         echo '        <h3 class="event-title">' . $row["nama"] . '</h3>';
                         echo '        <p class="event-info">' . $row["tanggal"] . ' ' . $row["waktu"] . '</p>';
                         echo '        <p class="event-info">' . $row["lokasi"] . '</p>';
-                        echo '        <p class="event-price">' . $row["harga"] . '</p>';
+                        echo '        <p class="event-price">Rp. ' . number_format($row["harga"], 0, ',', '.') . '</p>';
                         echo '    </div>';
                         echo '</div>';
                         echo '</a>';

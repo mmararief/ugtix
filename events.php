@@ -273,7 +273,6 @@
                     echo '        <p class="event-info">' . $row["tanggal"] . ' ' . $row["waktu"] . '</p>';
                     echo '        <p class="event-info">' . $row["lokasi"] . '</p>';
                     echo '        <p class="event-price">Rp. ' . number_format($row["harga"], 0, ',', '.') . '</p>';
-                    echo '        <p class="event-description">' . $row["deskripsi"] . '</p>';
                     echo '    </div>';
                     echo '</div>';
                     echo '</a>';
