@@ -1,6 +1,6 @@
 <?php
 // Konfigurasi database
-$host = 'localhost';      // Nama host database
+$host = 'localhost:3305';      // Nama host database
 $user = 'root';           // Username database
 $password = '';           // Password database
 $dbname = 'ugtix';        // Nama database

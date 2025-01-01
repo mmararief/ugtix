@@ -100,6 +100,7 @@
                 <input type="password" id="password" name="password" placeholder="Masukkan password" required>
             </div>
             <button type="submit">Login</button>
+            <a href="../index.php">Back</a>
         </form>
     </div>
 </body>

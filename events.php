@@ -156,6 +156,32 @@
             color: black;
         }
 
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .pagination a {
+            text-decoration: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            background-color: #2a2a2a;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .pagination a.active {
+            background-color: var(--accent-color);
+            color: black;
+        }
+
+        .pagination a:hover {
+            background-color: var(--accent-color);
+            color: black;
+        }
+
         /* Footer */
         .footer {
             background-color: var(--primary-color);
@@ -211,7 +237,6 @@
     <main class="events-container">
         <h1 class="page-title">Semua Event</h1>
 
-        <!-- Filters -->
         <div class="filters">
             <button class="filter-btn active">Semua</button>
             <button class="filter-btn">Musik</button>
@@ -220,18 +245,31 @@
             <button class="filter-btn">Festival</button>
         </div>
 
-        <!-- Event Grid -->
         <div class="event-grid">
-            <!-- Event Cards -->
             <?php
-            // Connect to the database
-            require_once 'process/koneksi.php';
-            // Fetch events from the database
-            $sql = "SELECT id,nama, tanggal, waktu, lokasi, harga, deskripsi, gambar FROM events";
+            $eventsPerPage = 4;
+            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $start = ($page - 1) * $eventsPerPage;
+
+            $servername = "localhost:3305";
+            $username = "root";
+            $password = "";
+            $dbname = "ugtix";
+            $conn = new mysqli($servername, $username, $password, $dbname);
+
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+
+            $totalEventsQuery = "SELECT COUNT(*) as total FROM events";
+            $totalEventsResult = $conn->query($totalEventsQuery);
+            $totalEvents = $totalEventsResult->fetch_assoc()['total'];
+            $totalPages = ceil($totalEvents / $eventsPerPage);
+
+            $sql = "SELECT id, nama, tanggal, waktu, lokasi, harga, deskripsi, gambar FROM events LIMIT $start, $eventsPerPage";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
-                // Output data of each row
                 while ($row = $result->fetch_assoc()) {
                     echo '<a href="detailevent.php?id=' . $row["id"] . '" class="event-card-link">';
                     echo '<div class="event-card">';
@@ -242,8 +280,8 @@
                     echo '        <h3 class="event-title">' . $row["nama"] . '</h3>';
                     echo '        <p class="event-info">' . $row["tanggal"] . ' ' . $row["waktu"] . '</p>';
                     echo '        <p class="event-info">' . $row["lokasi"] . '</p>';
-                    echo '        <p class="event-price">Rp ' . number_format($row["harga"], 0, ',', '.') . '</p>';
-
+                    echo '        <p class="event-price">Rp. ' . number_format($row["harga"], 0, ',', '.') . '</p>';
+                    echo '        <p class="event-description">' . $row["deskripsi"] . '</p>';
                     echo '    </div>';
                     echo '</div>';
                     echo '</a>';
@@ -251,21 +289,26 @@
             } else {
                 echo "No events available.";
             }
+
             $conn->close();
             ?>
         </div>
 
-        <!-- Pagination -->
         <div class="pagination">
-            <button class="page-btn active">1</button>
-            <button class="page-btn">2</button>
-            <button class="page-btn">3</button>
-            <button class="page-btn">4</button>
-            <button class="page-btn">→</button>
+            <?php if ($page > 1): ?>
+                <a href="?page=<?php echo $page - 1; ?>">←</a>
+            <?php endif; ?>
+
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a href="?page=<?php echo $i; ?>" class="<?php echo $i == $page ? 'active' : ''; ?>"><?php echo $i; ?></a>
+            <?php endfor; ?>
+
+            <?php if ($page < $totalPages): ?>
+                <a href="?page=<?php echo $page + 1; ?>">→</a>
+            <?php endif; ?>
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-info">
