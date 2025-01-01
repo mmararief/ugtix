@@ -44,6 +44,11 @@ $error = '';
 $orders = [];
 $step = isset($_SESSION['history_step']) ? $_SESSION['history_step'] : 1;
 
+// If we're on step 3, get orders from session
+if ($step == 3 && isset($_SESSION['orders'])) {
+    $orders = $_SESSION['orders'];
+}
+
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['submit_email'])) {
@@ -72,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'otp' => $otp
         ]);
 
-        if ($response && isset($response['success'])) {
+        if ($response && isset($response['success']) && $response['success'] === true && isset($response['message']) && $response['message'] === "OTP verified successfully") {
             $_SESSION['history_step'] = 3;
             // Fetch orders from database with joined event details
             require_once 'process/koneksi.php';
@@ -87,8 +92,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([$email]);
             $result = $stmt->get_result();
             $orders = $result->fetch_all(MYSQLI_ASSOC);
+
+            // Store orders in session
+            $_SESSION['orders'] = $orders;
+
+            header('Location: history.php');
+            exit;
         } else {
-            $error = 'Invalid OTP. Please try again.';
+            $error = isset($response['error']) ? $response['error'] : 'Invalid OTP. Please try again.';
         }
     }
 }
@@ -350,6 +361,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <input type="text" class="form-control" id="otp" name="otp" required>
                         </div>
                         <button type="submit" name="verify_otp" class="btn btn-primary">Verify OTP</button>
+                        <a href="history.php?reset=1" class="btn btn-secondary ms-2">Back</a>
                     </form>
                 </div>
             </div>
