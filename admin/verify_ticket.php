@@ -1,10 +1,10 @@
 <?php
 session_start();
-// if (!isset($_SESSION['admin_id'])) {
-//     header('Content-Type: application/json');
-//     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
-//     exit;
-// }
+if (!isset($_SESSION['admin_id'])) {
+    header('Content-Type: application/json');
+    echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+    exit;
+}
 
 require_once '../process/koneksi.php';
 

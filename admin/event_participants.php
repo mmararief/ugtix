@@ -22,17 +22,32 @@ $stmt->bind_param("i", $event_id);
 $stmt->execute();
 $event = $stmt->get_result()->fetch_assoc();
 
-if (!$event) {
-    header("Location: events.php");
-    exit;
-}
+// Add statistics query
+$stats_query = "SELECT 
+    COUNT(*) as total_participants,
+    SUM(CASE WHEN t.status = 'digunakan' THEN 1 ELSE 0 END) as scanned_count
+FROM pesanan p 
+LEFT JOIN tiket t ON p.id = t.id_pesanan
+WHERE p.id_event = ?";
+$stats_stmt = $conn->prepare($stats_query);
+$stats_stmt->bind_param("i", $event_id);
+$stats_stmt->execute();
+$stats = $stats_stmt->get_result()->fetch_assoc();
 
-// Get participants with their tickets
+// Modify participants query to include filter
+$filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
 $query = "SELECT p.*, t.kode_tiket, t.status as status_tiket
           FROM pesanan p 
           LEFT JOIN tiket t ON p.id = t.id_pesanan
-          WHERE p.id_event = ? 
-          ORDER BY p.tanggal DESC";
+          WHERE p.id_event = ?";
+
+if ($filter === 'scanned') {
+    $query .= " AND t.status = 'digunakan'";
+} elseif ($filter === 'unscanned') {
+    $query .= " AND (t.status = 'aktif' OR t.status IS NULL)";
+}
+
+$query .= " ORDER BY p.tanggal DESC";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $event_id);
 $stmt->execute();
@@ -263,6 +278,60 @@ $participants = $stmt->get_result();
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             background-color: var(--secondary-color);
         }
+
+        /* Statistics Cards */
+        .stats-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            flex: 1;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-card h4 {
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* Filter Buttons */
+        .filter-group {
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--gray-200);
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .filter-btn:hover {
+            background-color: var(--gray-100);
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-color);
+        }
     </style>
 </head>
 
@@ -275,6 +344,33 @@ $participants = $stmt->get_result();
             <p><i class="far fa-calendar"></i> <?= date('d F Y', strtotime($event['tanggal'])) ?></p>
             <p><i class="far fa-clock"></i> <?= date('H:i', strtotime($event['waktu'])) ?> WIB</p>
             <p><i class="fas fa-map-marker-alt"></i> <?= htmlspecialchars($event['lokasi']) ?></p>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <h4>Total Pendaftar</h4>
+                <div class="number"><?= $stats['total_participants'] ?></div>
+            </div>
+            <div class="stat-card">
+                <h4>Sudah Hadir</h4>
+                <div class="number"><?= $stats['scanned_count'] ?></div>
+            </div>
+            <div class="stat-card">
+                <h4>Belum Hadir</h4>
+                <div class="number"><?= $stats['total_participants'] - $stats['scanned_count'] ?></div>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <a href="?id=<?= $event_id ?>" class="filter-btn <?= $filter === 'all' ? 'active' : '' ?>">
+                Semua
+            </a>
+            <a href="?id=<?= $event_id ?>&filter=scanned" class="filter-btn <?= $filter === 'scanned' ? 'active' : '' ?>">
+                Sudah Hadir
+            </a>
+            <a href="?id=<?= $event_id ?>&filter=unscanned" class="filter-btn <?= $filter === 'unscanned' ? 'active' : '' ?>">
+                Belum Hadir
+            </a>
         </div>
 
         <div class="button-group">
@@ -319,8 +415,8 @@ $participants = $stmt->get_result();
                             <td><?= htmlspecialchars($row['metode']) ?></td>
                             <td><?= htmlspecialchars($row['kode_tiket'] ?? '-') ?></td>
                             <td>
-                                <span class="status-<?= strtolower($row['status_tiket'] ?? 'pending') ?>">
-                                    <?= htmlspecialchars($row['status_tiket'] ?? 'Pending') ?>
+                                <span class="status-<?= $row['status_tiket'] === 'digunakan' ? 'completed' : 'pending' ?>">
+                                    <?= $row['status_tiket'] === 'digunakan' ? 'Hadir' : ($row['status_tiket'] === 'aktif' ? 'Belum Hadir' : 'Pending') ?>
                                 </span>
                             </td>
                         </tr>
