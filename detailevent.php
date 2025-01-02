@@ -505,7 +505,7 @@ if ($result->num_rows > 0) {
                     </div>
 
                     <div class="event-price-tag">
-                        <i class="fas fa-ticket-alt"> Harga: Rp. <?php echo number_format($row['harga'], 0, ',', '.'); ?></i> 
+                        <i class="fas fa-ticket-alt"> Harga: Rp. <?php echo number_format($row['harga'], 0, ',', '.'); ?></i>
                     </div>
 
                     <button class="buy-btn">
@@ -548,10 +548,10 @@ if ($result->num_rows > 0) {
                         <input type="text" id="npm" name="npm" required placeholder="Masukkan NPM">
                     </div>
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="tanggal">📅 Tanggal</label>
                         <input type="date" id="tanggal" name="tanggal" required>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                         <label for="metode">💳 Metode Pembayaran</label>

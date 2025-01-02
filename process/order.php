@@ -6,14 +6,13 @@ $conn->begin_transaction();
 
 try {
     // Prepare and bind order insertion
-    $stmt = $conn->prepare("INSERT INTO pesanan (email, nama, npm, tanggal, id_event, metode, total) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssisi", $email, $nama, $npm, $tanggal, $id_event, $metode, $total);
+    $stmt = $conn->prepare("INSERT INTO pesanan (email, nama, npm, tanggal, id_event, metode, total) VALUES (?, ?, ?, UNIX_TIMESTAMP(), ?, ?, ?)");
+    $stmt->bind_param("sssisi", $email, $nama, $npm, $id_event, $metode, $total);
 
     // Set parameters and execute
     $email = $_POST['email'];
     $nama = $_POST['nama'];
     $npm = $_POST['npm'];
-    $tanggal = $_POST['tanggal'];
     $id_event = $_POST['id_event'];
     $metode = $_POST['metode'];
     $total = $_POST['total'];
